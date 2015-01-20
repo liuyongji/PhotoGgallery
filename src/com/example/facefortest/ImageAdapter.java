@@ -2,9 +2,10 @@ package com.example.facefortest;
 
 import java.util.List;
 
-import com.tandong.sa.zUImageLoader.core.DisplayImageOptions;
-import com.tandong.sa.zUImageLoader.core.ImageLoader;
-import com.tandong.sa.zUImageLoader.core.ImageLoaderConfiguration;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import android.app.Activity;
 import android.content.Context;
@@ -34,8 +35,8 @@ public class ImageAdapter extends BaseAdapter{
 				build();
 		imageLoader.init(configuration);
 		options=new DisplayImageOptions.Builder().
-				showImageOnLoading(R.drawable.loading).
-				showImageForEmptyUri(R.drawable.failed).
+//				showImageOnLoading(R.drawable.loading).
+//				showImageForEmptyUri(R.drawable.failed).
 				cacheInMemory(true).
 				cacheOnDisc(true).
 				build();
@@ -67,8 +68,8 @@ public class ImageAdapter extends BaseAdapter{
 //		View vi=convertView;  
         if(convertView==null){ 
         	holder = new ViewHolder(); 
-        	convertView = inflater.inflate(R.layout.listview_items, null); 
-            holder.imageView=(ImageView)convertView.findViewById(R.id.imageitems);
+//        	convertView = inflater.inflate(R.layout.listview_items, null); 
+//            holder.imageView=(ImageView)convertView.findViewById(R.id.imageitems);
             convertView.setTag(holder);
             
         }else {
