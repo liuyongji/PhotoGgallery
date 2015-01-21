@@ -9,24 +9,45 @@ import cn.bmob.v3.listener.FindListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
+import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
 	private List<String> list = new ArrayList<String>();
 	private int total = 0;
 	private ImageAdapter imageAdapter;
 	private GridView mGridView;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Bmob.initialize(this, "6bb1226b16bb29f5b8e3b71621af32fc");
-		mGridView = (GridView) findViewById(R.id.gridView1);
+		mGridView = (GridView) findViewById(R.id.gv_content);
+		mGridView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				imageBrower(position, list);
+			}
+		});
+		mSwipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.id_swipe_ly);
+		mSwipeRefreshLayout.setOnRefreshListener(this);  
 		new GetDataTask().execute(total);
 
+	}
+	private void imageBrower(int position, List<String> list) {
+		Intent intent = new Intent(MainActivity.this, ImagePagerActivity.class);
+		intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (ArrayList<String>) list);
+		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+		startActivity(intent);
 	}
 
 	private class GetDataTask extends AsyncTask<Integer, Void, Void> {
@@ -41,14 +62,13 @@ public class MainActivity extends Activity {
 
 						@Override
 						public void onSuccess(List<Person> persons) {
-							// TODO 自动生成的方法存根
 							total += persons.size();
 							for (int i = 0; i < persons.size(); i++) {
 								if (persons.get(i).getFile() != null) {
-									list.add(persons.get(i).getFile()
+									list.add(0,persons.get(i).getFile()
 											.getFileUrl());
-									Log.i("MainActivity", persons.get(i)
-											.getFile().getFileUrl());
+//									Log.i("MainActivity", persons.get(i)
+//											.getFile().getFileUrl());
 								}
 							}
 							imageAdapter = new ImageAdapter(MainActivity.this,
@@ -56,12 +76,12 @@ public class MainActivity extends Activity {
 							if (imageAdapter != null) {
 								mGridView.setAdapter(imageAdapter);
 							}
+							mSwipeRefreshLayout.setRefreshing(false);
 							imageAdapter.notifyDataSetChanged();
 						}
 
 						@Override
 						public void onError(int arg0, String arg1) {
-							// TODO 自动生成的方法存根
 							toast(arg1);
 						}
 					});
@@ -71,6 +91,11 @@ public class MainActivity extends Activity {
 
 	public void toast(String string) {
 		Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onRefresh() {
+		new GetDataTask().execute(total);
 	}
 
 }

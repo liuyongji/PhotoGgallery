@@ -4,11 +4,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <GridView
-        android:id="@+id/gridView1"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe_ly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <GridView
+        android:id="@+id/gv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:numColumns="3" >
     </GridView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
