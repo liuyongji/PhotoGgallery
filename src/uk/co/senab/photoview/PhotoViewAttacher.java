@@ -182,7 +182,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         mGestureDetector.setOnDoubleTapListener(new DefaultOnDoubleTapListener(this));
 
         // Finally, update the UI so that we're zoomable
-        setZoomable(true);
+//        setZoomable(true);
     }
 
     /**
