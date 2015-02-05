@@ -3,6 +3,8 @@ package com.example.facefortest;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 import com.example.facefortest.R;
 import com.loveplusplus.demo.image.HackyViewPager;
 import com.loveplusplus.demo.image.ImageDetailFragment;
@@ -23,6 +25,7 @@ public class ImagePagerActivity extends FragmentActivity {
 	private HackyViewPager mPager;
 	private int pagerPosition;
 	private TextView indicator;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

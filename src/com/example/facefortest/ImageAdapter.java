@@ -2,6 +2,7 @@ package com.example.facefortest;
 
 import java.util.List;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ public class ImageAdapter extends BaseAdapter {
 	private static LayoutInflater inflater;
 	private List<String> list;
 	private int width;
+	
 
 	@SuppressWarnings({ "deprecation" })
 	public ImageAdapter(Activity a, final List<String> urls) {
@@ -25,7 +27,7 @@ public class ImageAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		list = urls;
 		WindowManager wm = (WindowManager) activity
-                .getSystemService(Context.WINDOW_SERVICE);
+				.getSystemService(Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();
 	}
 
@@ -49,11 +51,14 @@ public class ImageAdapter extends BaseAdapter {
 		convertView = inflater.inflate(R.layout.lv_item, null);
 		ImageView imageView = (ImageView) convertView
 				.findViewById(R.id.imageView1);
-		imageView.setLayoutParams(new LinearLayout.LayoutParams(width/3, width/3));
+		
+		imageView.setLayoutParams(new LinearLayout.LayoutParams(width / 3,
+				width / 3));
 		FaceApplication.displayImage(list.get(position), imageView);
+		
 		return convertView;
 	}
-	
+
 	public void add(String string) {
 		this.list.add(string);
 	}

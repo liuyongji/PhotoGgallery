@@ -1,20 +1,24 @@
 package com.loveplusplus.demo.image;
 
+import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 import com.example.facefortest.FaceApplication;
 import com.example.facefortest.R;
 
 public class ImageDetailFragment extends Fragment {
 	private String mImageUrl;
-	private ImageView mImageView;
+	private PhotoView mImageView;
 	private PhotoViewAttacher mAttacher;
 
 	public static ImageDetailFragment newInstance(String imageUrl) {
@@ -37,9 +41,11 @@ public class ImageDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View v = inflater.inflate(R.layout.image_detail_fragment, container, false);
-		mImageView = (ImageView) v.findViewById(R.id.image);
+		mImageView = (PhotoView) v.findViewById(R.id.image);
 		mAttacher = new PhotoViewAttacher(mImageView);
-		
+		mAttacher.setZoomable(true);
+		mAttacher.setScaleType(ScaleType.CENTER_INSIDE);
+//		mAttacher.update();
 		mAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
 			
 			@Override
@@ -55,6 +61,12 @@ public class ImageDetailFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);	
 		FaceApplication.displayImage(mImageUrl, mImageView);
 		
+	}
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		 mAttacher.cleanup();
 	}
 
 }
