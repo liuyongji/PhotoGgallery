@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,11 +15,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
 	private List<String> list = new ArrayList<String>();
+	private List<String> list_id=new ArrayList<String>();
 	private int total = 0;
 	private ImageAdapter imageAdapter;
 	private GridView mGridView;
@@ -36,6 +39,32 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				imageBrower(position, list);
+			}
+		});
+		mGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					final int position, long id) {
+				Person person =new Person();
+				person.setObjectId(list_id.get(position));
+				person.delete(MainActivity.this,new DeleteListener() {
+					
+					@Override
+					public void onSuccess() {
+						list.remove(position);
+						list_id.remove(position);
+						imageAdapter.notifyDataSetChanged();
+					}
+					
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				return true;
 			}
 		});
 		mSwipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.id_swipe_ly);
@@ -67,6 +96,7 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
 								if (persons.get(i).getFile() != null) {
 									list.add(0,persons.get(i).getFile()
 											.getFileUrl());
+									list_id.add(0,persons.get(i).getObjectId());
 //									Log.i("MainActivity", persons.get(i)
 //											.getFile().getFileUrl());
 								}
