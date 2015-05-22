@@ -6,6 +6,7 @@ import cn.bmob.v3.datatype.BmobFile;
 public class Person extends BmobObject{
 	private String name;
     private BmobFile file;
+    private boolean like;
 	public String getName() {
 		return name;
 	}
@@ -17,6 +18,12 @@ public class Person extends BmobObject{
 	}
 	public void setFile(BmobFile file) {
 		this.file = file;
+	}
+	public boolean isLike() {
+		return like;
+	}
+	public void setLike(boolean like) {
+		this.like = like;
 	}
 
     

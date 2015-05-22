@@ -3,7 +3,7 @@ package com.example.facefortest;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
+import cn.bmob.v3.listener.UpdateListener;
 
 import com.example.facefortest.R;
 import com.loveplusplus.demo.image.HackyViewPager;
@@ -15,16 +15,22 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ImagePagerActivity extends FragmentActivity {
 	private static final String STATE_POSITION = "STATE_POSITION";
 	public static final String EXTRA_IMAGE_INDEX = "image_index";
 	public static final String EXTRA_IMAGE_URLS = "image_urls";
+	public static final String EXTRA_IMAGE_Ids = "image_ids";
 
 	private HackyViewPager mPager;
 	private int pagerPosition;
 	private TextView indicator;
+	private String ids;
 	
 
 	@Override
@@ -34,7 +40,7 @@ public class ImagePagerActivity extends FragmentActivity {
 
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 		ArrayList<String> urls = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
-
+		ids = getIntent().getStringExtra(EXTRA_IMAGE_Ids);
 
 		mPager = (HackyViewPager) findViewById(R.id.pager);
 		ImagePagerAdapter mAdapter = new ImagePagerAdapter(
@@ -97,4 +103,37 @@ public class ImagePagerActivity extends FragmentActivity {
 		}
 
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater mInflater = getMenuInflater();
+		mInflater.inflate(R.menu.main2, menu);
+		return true;// 返回false就不会显示菜单
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		Person person = new Person();
+		person.setObjectId(ids);
+		person.setLike(true);
+		person.update(ImagePagerActivity.this, new UpdateListener() {
+			
+			@Override
+			public void onSuccess() {
+				// TODO Auto-generated method stub
+				Toast.makeText(ImagePagerActivity.this, "success", Toast.LENGTH_LONG).show();
+			}
+			
+			@Override
+			public void onFailure(int arg0, String arg1) {
+				// TODO Auto-generated method stub
+				Toast.makeText(ImagePagerActivity.this, arg0+"  "+arg1, Toast.LENGTH_LONG).show();
+			}
+		});
+		
+		return true;
+	}
+
 }
