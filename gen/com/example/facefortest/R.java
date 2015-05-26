@@ -113,12 +113,12 @@ public final class R {
         public static final int login_icon_password=0x7f020008;
     }
     public static final class id {
-        public static final int action_settings=0x7f080021;
-        public static final int ampm_hitspace=0x7f08001b;
-        public static final int ampm_label=0x7f08001c;
+        public static final int action_settings=0x7f080022;
+        public static final int ampm_hitspace=0x7f08001c;
+        public static final int ampm_label=0x7f08001d;
         public static final int animator=0x7f080010;
-        public static final int center_view=0x7f080015;
-        public static final int collect=0x7f080022;
+        public static final int center_view=0x7f080016;
+        public static final int collect=0x7f080023;
         public static final int date_picker_day=0x7f08000e;
         public static final int date_picker_header=0x7f08000a;
         public static final int date_picker_month=0x7f08000d;
@@ -126,11 +126,11 @@ public final class R {
         public static final int date_picker_year=0x7f08000f;
         public static final int day_picker_selected_date_layout=0x7f08000b;
         public static final int done=0x7f080009;
-        public static final int done_button=0x7f08001f;
+        public static final int done_button=0x7f080020;
         public static final int gridview=0x7f080000;
         public static final int gv_content=0x7f080008;
-        public static final int hour_space=0x7f080016;
-        public static final int hours=0x7f080018;
+        public static final int hour_space=0x7f080017;
+        public static final int hours=0x7f080019;
         public static final int id_swipe_ly=0x7f080007;
         public static final int image=0x7f080011;
         public static final int imageView1=0x7f080014;
@@ -139,14 +139,15 @@ public final class R {
         public static final int login_btnlogin=0x7f080006;
         public static final int login_password_edit=0x7f080005;
         public static final int login_username_edit=0x7f080004;
-        public static final int minutes=0x7f08001a;
-        public static final int minutes_space=0x7f080019;
-        public static final int month_text_view=0x7f080020;
+        public static final int minutes=0x7f08001b;
+        public static final int minutes_space=0x7f08001a;
+        public static final int month_text_view=0x7f080021;
+        public static final int myViewPager1=0x7f080015;
         public static final int pager=0x7f080012;
         public static final int scrollview=0x7f080002;
-        public static final int separator=0x7f080017;
-        public static final int time_picker=0x7f08001e;
-        public static final int time_picker_dialog=0x7f08001d;
+        public static final int separator=0x7f080018;
+        public static final int time_picker=0x7f08001f;
+        public static final int time_picker_dialog=0x7f08001e;
         public static final int webview=0x7f080001;
     }
     public static final class layout {
@@ -160,9 +161,10 @@ public final class R {
         public static final int image_detail_fragment=0x7f030007;
         public static final int image_detail_pager=0x7f030008;
         public static final int lv_item=0x7f030009;
-        public static final int time_header_label=0x7f03000a;
-        public static final int time_picker_dialog=0x7f03000b;
-        public static final int year_label_text_view=0x7f03000c;
+        public static final int moviedetail=0x7f03000a;
+        public static final int time_header_label=0x7f03000b;
+        public static final int time_picker_dialog=0x7f03000c;
+        public static final int year_label_text_view=0x7f03000d;
     }
     public static final class menu {
         public static final int main=0x7f090000;
