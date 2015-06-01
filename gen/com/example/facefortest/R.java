@@ -117,6 +117,8 @@ public final class R {
         public static final int ampm_hitspace=0x7f08001c;
         public static final int ampm_label=0x7f08001d;
         public static final int animator=0x7f080010;
+        public static final int bitchs=0x7f080024;
+        public static final int bitchs_date=0x7f080025;
         public static final int center_view=0x7f080016;
         public static final int collect=0x7f080023;
         public static final int date_picker_day=0x7f08000e;

@@ -10,5 +10,10 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="显示收藏"/>
+     <item
+        android:id="@+id/bitchs"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="切换"/>
 
 </menu>

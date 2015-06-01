@@ -87,6 +87,8 @@ int id action_settings 0x7f080022
 int id ampm_hitspace 0x7f08001c
 int id ampm_label 0x7f08001d
 int id animator 0x7f080010
+int id bitchs 0x7f080024
+int id bitchs_date 0x7f080025
 int id center_view 0x7f080016
 int id collect 0x7f080023
 int id date_picker_day 0x7f08000e

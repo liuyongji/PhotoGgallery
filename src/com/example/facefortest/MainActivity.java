@@ -76,6 +76,7 @@ public class MainActivity extends Activity implements
 					public void onSuccess() {
 						list.remove(position);
 						list_id.remove(position);
+						total--;
 						imageAdapter.notifyDataSetChanged();
 					}
 
@@ -133,6 +134,11 @@ public class MainActivity extends Activity implements
 		case R.id.action_settings:
 			datePickerDialog.show(getFragmentManager(), "pick");
 			break;
+		case R.id.bitchs:
+			Intent intent =new Intent(MainActivity.this,BitchsActivity.class);
+			startActivity(intent);
+			
+			break;
 		case R.id.collect:
 			mcollect = true;
 			mlimit = false;
@@ -156,6 +162,8 @@ public class MainActivity extends Activity implements
 		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
 		startActivity(intent);
 	}
+	
+	
 
 	private class GetDataTask extends AsyncTask<Integer, Void, Void> {
 
@@ -234,5 +242,6 @@ public class MainActivity extends Activity implements
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 
 }
