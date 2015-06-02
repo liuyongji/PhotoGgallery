@@ -1,11 +1,14 @@
 package com.example.facefortest;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import com.example.facefortest.bitch.BitchsActivity;
 
 import mirko.android.datetimepicker.date.DatePickerDialog;
 import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
@@ -33,8 +36,8 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements
 		SwipeRefreshLayout.OnRefreshListener {
-	private List<String> list = new ArrayList<String>();
-	private List<String> list_id = new ArrayList<String>();
+
+	private List<Person> persons = new ArrayList<Person>();
 	private int total = 0;
 	private ImageAdapter imageAdapter;
 	private GridView mGridView;
@@ -45,7 +48,7 @@ public class MainActivity extends Activity implements
 	private boolean mlimit = false;
 	private Date date;
 	private boolean mcollect = false;
-	
+	private boolean admin;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +56,15 @@ public class MainActivity extends Activity implements
 		setContentView(R.layout.activity_main);
 		Bmob.initialize(this, "6bb1226b16bb29f5b8e3b71621af32fc");
 
-
+		admin = getIntent().getExtras().getBoolean("admin", false);
 		mGridView = (GridView) findViewById(R.id.gv_content);
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
-				
 
-				imageBrower(position, list, list_id.get(position));
+				imageBrower(position, persons);
 			}
 		});
 		mGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -71,24 +72,28 @@ public class MainActivity extends Activity implements
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					final int position, long id) {
-				Person person = new Person();
-				person.setObjectId(list_id.get(position));
-				person.delete(MainActivity.this, new DeleteListener() {
+				if (admin) {
+					Person person = new Person();
+					person.setObjectId(persons.get(position).getObjectId());
+					person.delete(MainActivity.this, new DeleteListener() {
 
-					@Override
-					public void onSuccess() {
-						list.remove(position);
-						list_id.remove(position);
-						total--;
-						imageAdapter.notifyDataSetChanged();
-					}
+						@Override
+						public void onSuccess() {
+							persons.remove(position);
+							total--;
+							imageAdapter.notifyDataSetChanged();
+						}
 
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
+						@Override
+						public void onFailure(int arg0, String arg1) {
+							// TODO Auto-generated method stub
 
-					}
-				});
+						}
+					});
+				}else {
+					toast("你没有操作权限");
+				}
+				
 
 				return true;
 			}
@@ -106,8 +111,9 @@ public class MainActivity extends Activity implements
 						int year, int month, int day) {
 					total = 0;
 					mlimit = true;
-					mcollect=false;
-					list.clear();
+					mcollect = false;
+					persons.clear();
+					// list.clear();
 					String datesString = Utils.pad(year) + "-"
 							+ Utils.pad(month + 1) + "-" + Utils.pad(day);
 					date = null;
@@ -138,15 +144,15 @@ public class MainActivity extends Activity implements
 			datePickerDialog.show(getFragmentManager(), "pick");
 			break;
 		case R.id.bitchs:
-			Intent intent =new Intent(MainActivity.this,BitchsActivity.class);
+			Intent intent = new Intent(MainActivity.this, BitchsActivity.class);
 			startActivity(intent);
-			
+
 			break;
 		case R.id.collect:
 			mcollect = true;
 			mlimit = false;
 			total = 0;
-			list.clear();
+			persons.clear();
 			new GetDataTask().execute(total);
 			break;
 
@@ -157,16 +163,13 @@ public class MainActivity extends Activity implements
 		return true;
 	}
 
-	private void imageBrower(int position, List<String> list, String id) {
+	private void imageBrower(int position, List<Person> list) {
 		Intent intent = new Intent(MainActivity.this, ImagePagerActivity.class);
-		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_Ids, id);
-		intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,
-				(ArrayList<String>) list);
+		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,
+				(Serializable) persons);
 		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
 		startActivity(intent);
 	}
-	
-	
 
 	private class GetDataTask extends AsyncTask<Integer, Void, Void> {
 
@@ -196,30 +199,20 @@ public class MainActivity extends Activity implements
 
 						@Override
 						public void onSuccess(List<Person> persons) {
-							if (persons==null||persons.size()==0) {
+							if (persons == null || persons.size() == 0) {
 								toast("已经到头了");
 								mSwipeRefreshLayout.setRefreshing(false);
 								return;
 							}
-							
-							
+
+							MainActivity.this.persons.addAll(0, persons);
+
 							total += persons.size();
-							for (int i = 0; i < persons.size(); i++) {
-								if (persons.get(i).getFile() != null) {
-									list.add(0, persons.get(i).getFile()
-											.getFileUrl(MainActivity.this));
-									list_id.add(0, persons.get(i).getObjectId());
-									// Log.i("MainActivity", persons.get(i)
-									// .getFile().getFileUrl());
-								}
-							}
 							imageAdapter = new ImageAdapter(MainActivity.this,
-									list);
+									MainActivity.this.persons);
 							toast(persons.get(persons.size() - 1)
 									.getCreatedAt());
-							if (imageAdapter != null) {
-								mGridView.setAdapter(imageAdapter);
-							}
+							mGridView.setAdapter(imageAdapter);
 							mSwipeRefreshLayout.setRefreshing(false);
 							imageAdapter.notifyDataSetChanged();
 						}
@@ -234,7 +227,7 @@ public class MainActivity extends Activity implements
 	}
 
 	public void toast(String string) {
-		Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
+		Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -247,6 +240,5 @@ public class MainActivity extends Activity implements
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 }

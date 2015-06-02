@@ -36,8 +36,11 @@
         </activity>
         <activity android:name="com.example.facefortest.MainActivity" >
         </activity>
-        <activity android:name="com.example.facefortest.BitchsActivity" >
+        <activity android:name="com.example.facefortest.bitch.BitchsActivity" >
         </activity>
+        <activity android:name="com.example.facefortest.bitch.BitchPagerActivity" >
+        </activity>
+        
     </application>
 
 </manifest>

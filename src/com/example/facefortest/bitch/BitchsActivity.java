@@ -1,5 +1,6 @@
-package com.example.facefortest;
+package com.example.facefortest.bitch;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,12 +8,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.example.facefortest.ImagePagerActivity;
+import com.example.facefortest.Person;
+import com.example.facefortest.R;
+import com.example.facefortest.Utils;
+import com.example.facefortest.R.id;
+import com.example.facefortest.R.layout;
+
 import mirko.android.datetimepicker.date.DatePickerDialog;
 import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,12 +37,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 public class BitchsActivity extends Activity implements
 		SwipeRefreshLayout.OnRefreshListener {
 	private int total = 0;
-	private List<String> list = new ArrayList<String>();
-	private List<String> list_id = new ArrayList<String>();
 	private GridView mGridView;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
 	private BitchsAdapter imageAdapter;
@@ -42,6 +50,8 @@ public class BitchsActivity extends Activity implements
 	private boolean mlimit = false;
 	private Date date;
 	private final Calendar mCalendar = Calendar.getInstance();
+	
+	private List<Bitchs> persons =new ArrayList<Bitchs>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +65,33 @@ public class BitchsActivity extends Activity implements
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				imageBrower(position, list, list_id.get(position));
+				imageBrower(position, persons);
+			}
+		});
+		mGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					final int position, long id) {
+				Person person = new Person();
+				person.setObjectId(persons.get(position).getObjectId());
+				person.delete(BitchsActivity.this, new DeleteListener() {
+
+					@Override
+					public void onSuccess() {
+						persons.remove(position);
+						total--;
+						imageAdapter.notifyDataSetChanged();
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+
+				return true;
 			}
 		});
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.id_swipe_ly);
@@ -69,7 +105,7 @@ public class BitchsActivity extends Activity implements
 						int year, int month, int day) {
 					total = 0;
 					mlimit = true;
-					list.clear();
+					persons.clear();
 					String datesString = Utils.pad(year) + "-"
 							+ Utils.pad(month + 1) + "-" + Utils.pad(day);
 					date = null;
@@ -116,16 +152,11 @@ public class BitchsActivity extends Activity implements
 								mSwipeRefreshLayout.setRefreshing(false);
 								return;
 							}
+							
+							BitchsActivity.this.persons.addAll(0, persons);
 							total += persons.size();
-							for (int i = 0; i < persons.size(); i++) {
-								if (persons.get(i).getFile() != null) {
-									list.add(0, persons.get(i).getFile()
-											.getFileUrl(BitchsActivity.this));
-									list_id.add(0, persons.get(i).getObjectId());
-								}
-							}
 							imageAdapter = new BitchsAdapter(
-									BitchsActivity.this, list);
+									BitchsActivity.this, BitchsActivity.this.persons);
 							toast(persons.get(persons.size() - 1)
 									.getCreatedAt());
 							if (imageAdapter != null) {
@@ -153,14 +184,13 @@ public class BitchsActivity extends Activity implements
 		new GetDataTask().execute();
 	}
 
-	private void imageBrower(int position, List<String> list, String id) {
-		Intent intent = new Intent(BitchsActivity.this,
-				ImagePagerActivity.class);
-		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_Ids, id);
-		intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,
-				(ArrayList<String>) list);
-		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+	private void imageBrower(int position, List<Bitchs> persons) {
+		Intent intent = new Intent(BitchsActivity.this, BitchPagerActivity.class);
+		intent.putExtra(BitchPagerActivity.EXTRA_IMAGE_URLS,
+				(Serializable) persons);
+		intent.putExtra(BitchPagerActivity.EXTRA_IMAGE_INDEX, position);
 		startActivity(intent);
+		Toast.makeText(BitchsActivity.this, persons.get(position).getCreatedAt(), Toast.LENGTH_SHORT).show();
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

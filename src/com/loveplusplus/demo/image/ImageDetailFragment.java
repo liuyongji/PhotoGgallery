@@ -4,13 +4,16 @@ import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import a.This;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 
 import com.example.facefortest.FaceApplication;
@@ -20,11 +23,12 @@ public class ImageDetailFragment extends Fragment {
 	private String mImageUrl;
 	private PhotoView mImageView;
 	private PhotoViewAttacher mAttacher;
+	private String mcreate;
 
-	public static ImageDetailFragment newInstance(String imageUrl) {
+	public static ImageDetailFragment newInstance(String imageUrl,String createtime) {
 		final ImageDetailFragment f = new ImageDetailFragment();
-
 		final Bundle args = new Bundle();
+		args.putString("time", createtime);
 		args.putString("url", imageUrl);
 		f.setArguments(args);
 
@@ -35,7 +39,7 @@ public class ImageDetailFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mImageUrl = getArguments() != null ? getArguments().getString("url") : null;
-
+		mcreate=getArguments() != null ? getArguments().getString("time") : "nooo";
 	}
 
 	@Override
@@ -50,6 +54,7 @@ public class ImageDetailFragment extends Fragment {
 			
 			@Override
 			public void onPhotoTap(View arg0, float arg1, float arg2) {
+//				Toast.makeText(getActivity(), mcreate, Toast.LENGTH_SHORT).show();
 				getActivity().finish();
 			}
 		});

@@ -1,6 +1,12 @@
-package com.example.facefortest;
+package com.example.facefortest.bitch;
 
 import java.util.List;
+
+import com.example.facefortest.FaceApplication;
+import com.example.facefortest.R;
+import com.example.facefortest.R.drawable;
+import com.example.facefortest.R.id;
+import com.example.facefortest.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,10 +20,10 @@ import android.widget.LinearLayout;
 public class BitchsAdapter extends BaseAdapter{
 	private Context context;
 	private static LayoutInflater inflater;
-	private List<String> list;
+	private List<Bitchs> list;
 	private int width;
 	
-	public BitchsAdapter(Context context,List<String> list){
+	public BitchsAdapter(Context context,List<Bitchs> list){
 		this.context=context;
 		this.list=list;
 		inflater = (LayoutInflater) context
@@ -54,7 +60,11 @@ public class BitchsAdapter extends BaseAdapter{
 		
 		imageView.setLayoutParams(new LinearLayout.LayoutParams(width / 3,
 				width / 3));
-		FaceApplication.displayImage(list.get(position), imageView);
+		if (list.get(position).getFile()!=null) {
+			FaceApplication.displayImage(list.get(position).getFile().getFileUrl(context), imageView);
+		}else {
+			imageView.setImageResource(R.drawable.error);
+		}
 		return convertView;
 	}
 

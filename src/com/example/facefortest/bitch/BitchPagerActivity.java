@@ -1,10 +1,14 @@
-package com.example.facefortest;
+package com.example.facefortest.bitch;
 
 import java.util.List;
 
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.example.facefortest.R;
+import com.example.facefortest.R.id;
+import com.example.facefortest.R.layout;
+import com.example.facefortest.R.menu;
+import com.example.facefortest.R.string;
 import com.loveplusplus.demo.image.HackyViewPager;
 import com.loveplusplus.demo.image.ImageDetailFragment;
 
@@ -20,7 +24,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ImagePagerActivity extends FragmentActivity {
+public class BitchPagerActivity extends FragmentActivity {
 	private static final String STATE_POSITION = "STATE_POSITION";
 	public static final String EXTRA_IMAGE_INDEX = "image_index";
 	public static final String EXTRA_IMAGE_URLS = "image_urls";
@@ -28,7 +32,8 @@ public class ImagePagerActivity extends FragmentActivity {
 	private HackyViewPager mPager;
 	private int pagerPosition;
 	private TextView indicator;
-	private List<Person> persons;
+	private List<Bitchs> persons;
+//	private String ids;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -37,7 +42,7 @@ public class ImagePagerActivity extends FragmentActivity {
 		setContentView(R.layout.image_detail_pager);
 
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
-	    persons = (List<Person>) getIntent().getSerializableExtra(
+	    persons = (List<Bitchs>) getIntent().getSerializableExtra(
 				EXTRA_IMAGE_URLS);
 
 		mPager = (HackyViewPager) findViewById(R.id.pager);
@@ -82,10 +87,11 @@ public class ImagePagerActivity extends FragmentActivity {
 
 	private class ImagePagerAdapter extends FragmentStatePagerAdapter {
 
+		// public List<String> fileList;
 
-		public List<Person> fileList;
+		public List<Bitchs> fileList;
 
-		public ImagePagerAdapter(FragmentManager fm, List<Person> fileList) {
+		public ImagePagerAdapter(FragmentManager fm, List<Bitchs> fileList) {
 			super(fm);
 			this.fileList = fileList;
 		}
@@ -98,7 +104,7 @@ public class ImagePagerActivity extends FragmentActivity {
 		@Override
 		public Fragment getItem(int position) {
 			String url = fileList.get(position).getFile()
-					.getFileUrl(ImagePagerActivity.this);
+					.getFileUrl(BitchPagerActivity.this);
 			return ImageDetailFragment.newInstance(url,fileList.get(position).getCreatedAt());
 		}
 
@@ -115,22 +121,22 @@ public class ImagePagerActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
-		Person person = new Person();
+		Bitchs person = new Bitchs();
 		person.setObjectId(persons.get(pagerPosition).getObjectId());
 		person.setLike(true);
-		person.update(ImagePagerActivity.this, new UpdateListener() {
+		person.update(BitchPagerActivity.this, new UpdateListener() {
 
 			@Override
 			public void onSuccess() {
 				// TODO Auto-generated method stub
-				Toast.makeText(ImagePagerActivity.this, "success",
+				Toast.makeText(BitchPagerActivity.this, "success",
 						Toast.LENGTH_LONG).show();
 			}
 
 			@Override
 			public void onFailure(int arg0, String arg1) {
 				// TODO Auto-generated method stub
-				Toast.makeText(ImagePagerActivity.this, arg0 + "  " + arg1,
+				Toast.makeText(BitchPagerActivity.this, arg0 + "  " + arg1,
 						Toast.LENGTH_LONG).show();
 			}
 		});

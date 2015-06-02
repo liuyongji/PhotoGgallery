@@ -15,12 +15,13 @@ import android.widget.LinearLayout;
 public class ImageAdapter extends BaseAdapter {
 	private Activity activity;
 	private static LayoutInflater inflater;
-	private List<String> list;
+//	private List<String> list;
 	private int width;
 	
+	private List<Person> list;
+	
 
-	@SuppressWarnings({ "deprecation" })
-	public ImageAdapter(Activity a, final List<String> urls) {
+	public ImageAdapter(Activity a, final List<Person> urls) {
 		activity = a;
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -29,6 +30,7 @@ public class ImageAdapter extends BaseAdapter {
 				.getSystemService(Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();
 	}
+	
 
 	@Override
 	public int getCount() {
@@ -53,13 +55,14 @@ public class ImageAdapter extends BaseAdapter {
 		
 		imageView.setLayoutParams(new LinearLayout.LayoutParams(width / 3,
 				width / 3));
-		FaceApplication.displayImage(list.get(position), imageView);
+		if (list.get(position).getFile()!=null) {
+			FaceApplication.displayImage(list.get(position).getFile().getFileUrl(activity), imageView);
+		}else {
+			imageView.setImageResource(R.drawable.error);
+		}
+		
 		
 		return convertView;
-	}
-
-	public void add(String string) {
-		this.list.add(string);
 	}
 
 }

@@ -7,15 +7,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 
 
 public class LoginActivity extends Activity {
 
 	EditText et_username, et_password;
-	
-
 	
 
 	@Override
@@ -31,8 +28,10 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (et_password.getText().toString().equals("123")) {
-					startActivity(new Intent(LoginActivity.this,MainActivity.class));
-				}
+					startActivity(new Intent(LoginActivity.this,MainActivity.class).putExtra("admin", false));
+				}else if (et_password.getText().toString().equals("147")) {
+					startActivity(new Intent(LoginActivity.this,MainActivity.class).putExtra("admin", true));
+				} 
 			}
 		});
 	}
