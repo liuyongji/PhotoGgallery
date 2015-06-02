@@ -4,6 +4,6 @@
         android:id="@+id/bitchs_date"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="日期"/>
+        android:title="收藏"/>
 
 </menu>

@@ -106,11 +106,13 @@ public final class R {
         public static final int btn_login_n=0x7f020001;
         public static final int btn_login_p=0x7f020002;
         public static final int btn_login_selector=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int input_bg=0x7f020005;
-        public static final int loading=0x7f020006;
-        public static final int login_icon_account=0x7f020007;
-        public static final int login_icon_password=0x7f020008;
+        public static final int error=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int icon=0x7f020006;
+        public static final int input_bg=0x7f020007;
+        public static final int loading=0x7f020008;
+        public static final int login_icon_account=0x7f020009;
+        public static final int login_icon_password=0x7f02000a;
     }
     public static final class id {
         public static final int action_settings=0x7f080022;
