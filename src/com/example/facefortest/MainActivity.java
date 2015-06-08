@@ -15,6 +15,7 @@ import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import android.os.AsyncTask;
@@ -54,7 +55,7 @@ public class MainActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Bmob.initialize(this, "6bb1226b16bb29f5b8e3b71621af32fc");
+		
 
 		admin = getIntent().getExtras().getBoolean("admin", false);
 		mGridView = (GridView) findViewById(R.id.gv_content);
@@ -73,23 +74,26 @@ public class MainActivity extends Activity implements
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					final int position, long id) {
 				if (admin) {
-					Person person = new Person();
-					person.setObjectId(persons.get(position).getObjectId());
-					person.delete(MainActivity.this, new DeleteListener() {
-
+					final Person person = new Person();
+					BmobFile file = new BmobFile();
+					file.setUrl(persons.get(position).getFile().getUrl());
+					file.delete(MainActivity.this, new DeleteListener() {
+						
 						@Override
 						public void onSuccess() {
-							persons.remove(position);
-							total--;
-							imageAdapter.notifyDataSetChanged();
+							// TODO Auto-generated method stub
+							
 						}
-
+						
 						@Override
 						public void onFailure(int arg0, String arg1) {
 							// TODO Auto-generated method stub
-
+							toast("删除文件失败："+arg1);
 						}
 					});
+					
+					
+					
 				}else {
 					toast("你没有操作权限");
 				}
@@ -144,6 +148,9 @@ public class MainActivity extends Activity implements
 			datePickerDialog.show(getFragmentManager(), "pick");
 			break;
 		case R.id.bitchs:
+			if (!admin) {
+				break;
+			}
 			Intent intent = new Intent(MainActivity.this, BitchsActivity.class);
 			startActivity(intent);
 
@@ -189,11 +196,12 @@ public class MainActivity extends Activity implements
 				query3.add(query2);
 				bmobQuery.and(query3);
 			}
+			bmobQuery.order("-createdAt");
 			if (mcollect) {
 				bmobQuery.addWhereEqualTo("like", true);
+				bmobQuery.order("-updatedAt");
 			}
 			bmobQuery.setSkip(total);
-			bmobQuery.order("-createdAt");
 			bmobQuery.findObjects(MainActivity.this,
 					new FindListener<Person>() {
 
@@ -237,7 +245,7 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

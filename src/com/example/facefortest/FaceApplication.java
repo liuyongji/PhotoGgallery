@@ -2,6 +2,8 @@ package com.example.facefortest;
 
 import java.io.File;
 
+import cn.bmob.v3.Bmob;
+
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -20,6 +22,7 @@ public class FaceApplication extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+		Bmob.initialize(this, "6bb1226b16bb29f5b8e3b71621af32fc");
 		File cacheDir =StorageUtils.getOwnCacheDirectory(this, "facetest");  
 		configuration = new ImageLoaderConfiguration.Builder(getApplicationContext())
 		.diskCache(new UnlimitedDiscCache(cacheDir))

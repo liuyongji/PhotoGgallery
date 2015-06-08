@@ -56,6 +56,7 @@ public class ImageAdapter extends BaseAdapter {
 		imageView.setLayoutParams(new LinearLayout.LayoutParams(width / 3,
 				width / 3));
 		if (list.get(position).getFile()!=null) {
+//			list.get(position).getFile().loadImageThumbnail(activity, imageView, 300, 300);
 			FaceApplication.displayImage(list.get(position).getFile().getFileUrl(activity), imageView);
 		}else {
 			imageView.setImageResource(R.drawable.error);

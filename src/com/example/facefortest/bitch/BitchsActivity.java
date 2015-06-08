@@ -8,19 +8,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.example.facefortest.ImagePagerActivity;
-import com.example.facefortest.Person;
 import com.example.facefortest.R;
 import com.example.facefortest.Utils;
-import com.example.facefortest.R.id;
-import com.example.facefortest.R.layout;
-
 import mirko.android.datetimepicker.date.DatePickerDialog;
 import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 
-
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import android.annotation.SuppressLint;
@@ -30,7 +25,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,8 +44,8 @@ public class BitchsActivity extends Activity implements
 	private boolean mlimit = false;
 	private Date date;
 	private final Calendar mCalendar = Calendar.getInstance();
-	
-	private List<Bitchs> persons =new ArrayList<Bitchs>();
+
+	private List<Bitchs> persons = new ArrayList<Bitchs>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +58,6 @@ public class BitchsActivity extends Activity implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-
 				imageBrower(position, persons);
 			}
 		});
@@ -73,21 +66,38 @@ public class BitchsActivity extends Activity implements
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					final int position, long id) {
-				Person person = new Person();
-				person.setObjectId(persons.get(position).getObjectId());
-				person.delete(BitchsActivity.this, new DeleteListener() {
+				final Bitchs person = new Bitchs();
+				BmobFile file = new BmobFile();
+				file.setUrl(persons.get(position).getFile().getUrl());
+				file.delete(BitchsActivity.this, new DeleteListener() {
 
 					@Override
 					public void onSuccess() {
-						persons.remove(position);
-						total--;
-						imageAdapter.notifyDataSetChanged();
+						// TODO Auto-generated method stub
+						person.setObjectId(persons.get(position).getObjectId());
+						person.delete(BitchsActivity.this,
+								new DeleteListener() {
+
+									@Override
+									public void onSuccess() {
+										persons.remove(position);
+										total--;
+										imageAdapter.notifyDataSetChanged();
+
+									}
+
+									@Override
+									public void onFailure(int arg0, String arg1) {
+										// TODO Auto-generated method stub
+										toast("删除字段失败：" + arg1);
+									}
+								});
 					}
 
 					@Override
 					public void onFailure(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-
+						toast("删除文件失败：" +arg0+ arg1);
 					}
 				});
 
@@ -98,6 +108,7 @@ public class BitchsActivity extends Activity implements
 		mSwipeRefreshLayout.setOnRefreshListener(this);
 		new GetDataTask().execute(total);
 	}
+
 	final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
 			new OnDateSetListener() {
 
@@ -152,16 +163,15 @@ public class BitchsActivity extends Activity implements
 								mSwipeRefreshLayout.setRefreshing(false);
 								return;
 							}
-							
+
 							BitchsActivity.this.persons.addAll(0, persons);
 							total += persons.size();
 							imageAdapter = new BitchsAdapter(
-									BitchsActivity.this, BitchsActivity.this.persons);
+									BitchsActivity.this,
+									BitchsActivity.this.persons);
 							toast(persons.get(persons.size() - 1)
 									.getCreatedAt());
-							if (imageAdapter != null) {
-								mGridView.setAdapter(imageAdapter);
-							}
+							mGridView.setAdapter(imageAdapter);
 							mSwipeRefreshLayout.setRefreshing(false);
 							imageAdapter.notifyDataSetChanged();
 						}
@@ -185,19 +195,24 @@ public class BitchsActivity extends Activity implements
 	}
 
 	private void imageBrower(int position, List<Bitchs> persons) {
-		Intent intent = new Intent(BitchsActivity.this, BitchPagerActivity.class);
+		Intent intent = new Intent(BitchsActivity.this,
+				BitchPagerActivity.class);
 		intent.putExtra(BitchPagerActivity.EXTRA_IMAGE_URLS,
 				(Serializable) persons);
 		intent.putExtra(BitchPagerActivity.EXTRA_IMAGE_INDEX, position);
 		startActivity(intent);
-		Toast.makeText(BitchsActivity.this, persons.get(position).getCreatedAt(), Toast.LENGTH_SHORT).show();
+		Toast.makeText(BitchsActivity.this,
+				persons.get(position).getCreatedAt(), Toast.LENGTH_SHORT)
+				.show();
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		menu.add(0, 1, 0, "日期");
-		return true;// 返回false就不会显示菜单
+		return false;// 返回false就不会显示菜单
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		datePickerDialog.show(getFragmentManager(), "pick");

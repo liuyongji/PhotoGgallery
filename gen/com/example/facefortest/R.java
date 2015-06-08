@@ -182,6 +182,7 @@ public final class R {
         public static final int circle_radius_multiplier_24HourMode=0x7f050001;
         public static final int costomview=0x7f05001d;
         /**  DO NOT TRANSLATE 
+ DO NOT TRANSLATE 
          */
         public static final int day_of_week_label_typeface=0x7f050019;
         /** 
@@ -189,12 +190,19 @@ public final class R {
         a selectable grid of days laid out by month.
         [CHAR LIMIT=50]
      
+
+        Content description for the month and day selector in the date picker, which displays
+        a selectable grid of days laid out by month.
+        [CHAR LIMIT=50]
+     
          */
         public static final int day_picker_description=0x7f05000f;
         /**  Accessibility announcement when a number that had been typed in is deleted [CHAR_LIMIT=NONE] 
+ Accessibility announcement when a number that had been typed in is deleted [CHAR_LIMIT=NONE] 
          */
         public static final int deleted_key=0x7f050014;
         /**  Label for button to confirm chosen date or time [CHAR LIMIT=30] 
+ Label for button to confirm chosen date or time [CHAR LIMIT=30] 
          */
         public static final int done_label=0x7f05000a;
         public static final int hello_world=0x7f05001c;
@@ -203,13 +211,24 @@ public final class R {
          selectable hours of the day along the inside edge of a circle, as in an analog clock.
          [CHAR LIMIT=50]
     
+
+         Content description for the hour selector in the time picker, which displays
+         selectable hours of the day along the inside edge of a circle, as in an analog clock.
+         [CHAR LIMIT=50]
+    
          */
         public static final int hour_picker_description=0x7f05000b;
         public static final int image_content=0x7f05001e;
         /**  Accessibility description for the item that is currently selected. 
+ Accessibility description for the item that is currently selected. 
          */
         public static final int item_is_selected=0x7f050013;
         /** 
+         Content description for the minute selector in the time picker, which displays
+         selectable five-minute intervals along the inside edge of a circle, as in an analog clock.
+         [CHAR LIMIT=50]
+    
+
          Content description for the minute selector in the time picker, which displays
          selectable five-minute intervals along the inside edge of a circle, as in an analog clock.
          [CHAR LIMIT=50]
@@ -220,21 +239,27 @@ public final class R {
         public static final int numbers_radius_multiplier_normal=0x7f050004;
         public static final int numbers_radius_multiplier_outer=0x7f050006;
         /**  DO NOT TRANSLATE 
+ DO NOT TRANSLATE 
          */
         public static final int radial_numbers_typeface=0x7f050017;
         /**  DO NOT TRANSLATE 
+ DO NOT TRANSLATE 
          */
         public static final int sans_serif=0x7f050018;
         /**  Accessibility announcement for the day picker [CHAR LIMIT=NONE] 
+ Accessibility announcement for the day picker [CHAR LIMIT=NONE] 
          */
         public static final int select_day=0x7f050011;
         /**  Accessibility announcement for hour circular picker [CHAR LIMIT=NONE] 
+ Accessibility announcement for hour circular picker [CHAR LIMIT=NONE] 
          */
         public static final int select_hours=0x7f05000d;
         /**  Accessibility announcement for minute circular picker [CHAR LIMIT=NONE] 
+ Accessibility announcement for minute circular picker [CHAR LIMIT=NONE] 
          */
         public static final int select_minutes=0x7f05000e;
         /**  Accessibility announcement for the year picker [CHAR LIMIT=NONE] 
+ Accessibility announcement for the year picker [CHAR LIMIT=NONE] 
          */
         public static final int select_year=0x7f050012;
         public static final int selection_radius_multiplier=0x7f050002;
@@ -242,13 +267,20 @@ public final class R {
         public static final int text_size_multiplier_normal=0x7f050007;
         public static final int text_size_multiplier_outer=0x7f050009;
         /**  DO NOT TRANSLATE 
+ DO NOT TRANSLATE 
          */
         public static final int time_placeholder=0x7f050015;
         /**  DO NOT TRANSLATE 
+ DO NOT TRANSLATE 
          */
         public static final int time_separator=0x7f050016;
         public static final int viewpager_indicator=0x7f05001f;
         /** 
+        Content description for the year selector in the date picker, which displays
+        a scrolling, vertical list of years.
+        [CHAR LIMIT=50]
+     
+
         Content description for the year selector in the date picker, which displays
         a scrolling, vertical list of years.
         [CHAR LIMIT=50]
