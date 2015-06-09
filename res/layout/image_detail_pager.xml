@@ -20,4 +20,14 @@
         android:text="detail"
         android:background="@android:color/transparent" />
 
+    <EditText
+        android:id="@+id/ed_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:textColor="@color/white" >
+
+        <requestFocus />
+    </EditText>
+
 </FrameLayout>
