@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class ImagePagerActivity extends FragmentActivity {
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 	    persons = (List<Person>) getIntent().getSerializableExtra(
 				EXTRA_IMAGE_URLS);
+	    findViewById(R.id.ed_name).setVisibility(View.GONE);
 
 		mPager = (HackyViewPager) findViewById(R.id.pager);
 		ImagePagerAdapter mAdapter = new ImagePagerAdapter(

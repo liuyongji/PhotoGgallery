@@ -120,7 +120,7 @@ public final class R {
         public static final int ampm_label=0x7f08001e;
         public static final int animator=0x7f080010;
         public static final int bitchs=0x7f080025;
-        public static final int bitchs_date=0x7f080026;
+        public static final int bitchs_date=0x7f080027;
         public static final int center_view=0x7f080017;
         public static final int collect=0x7f080024;
         public static final int date_picker_day=0x7f08000e;
@@ -151,6 +151,7 @@ public final class R {
         public static final int pager=0x7f080012;
         public static final int scrollview=0x7f080002;
         public static final int separator=0x7f080019;
+        public static final int star=0x7f080026;
         public static final int time_picker=0x7f080020;
         public static final int time_picker_dialog=0x7f08001f;
         public static final int webview=0x7f080001;

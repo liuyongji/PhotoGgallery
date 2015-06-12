@@ -16,10 +16,6 @@ import cn.bmob.v3.listener.UploadFileListener;
 
 import com.example.facefortest.BitmapUtil;
 import com.example.facefortest.R;
-import com.example.facefortest.R.id;
-import com.example.facefortest.R.layout;
-import com.example.facefortest.R.menu;
-import com.example.facefortest.R.string;
 import com.face.test.bean.FaceInfos;
 import com.face.test.bean.Stars;
 import com.facepp.error.FaceppParseException;
@@ -29,6 +25,7 @@ import com.google.gson.Gson;
 import com.loveplusplus.demo.image.HackyViewPager;
 import com.loveplusplus.demo.image.ImageDetailFragment;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -62,6 +59,7 @@ public class BitchPagerActivity extends FragmentActivity {
 	private BmobFile bmobFile;
 	private FaceInfos faceInfos;
 	private EditText namEditText;
+	private ProgressDialog progressDialog;
 
 	// private String ids;
 
@@ -76,7 +74,7 @@ public class BitchPagerActivity extends FragmentActivity {
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 		persons = (List<Bitchs>) getIntent().getSerializableExtra(
 				EXTRA_IMAGE_URLS);
-		namEditText=(EditText)findViewById(R.id.ed_name);
+		namEditText = (EditText) findViewById(R.id.ed_name);
 		mPager = (HackyViewPager) findViewById(R.id.pager);
 		ImagePagerAdapter mAdapter = new ImagePagerAdapter(
 				getSupportFragmentManager(), persons);
@@ -127,38 +125,59 @@ public class BitchPagerActivity extends FragmentActivity {
 									Stars stars = new Stars();
 									stars.setFaceId(faceInfos.getFace().get(0)
 											.getFace_id());
-									stars.setName(namEditText.getText().toString());
+									stars.setName(namEditText.getText()
+											.toString());
 									stars.setBmobFile(bmobFile);
-									stars.save(BitchPagerActivity.this,new SaveListener() {
-										
-										@Override
-										public void onSuccess() {
-//											Toast.makeText(BitchPagerActivity.this, namEditText.getText()+"添加成功", 1).show();
-											namEditText.setText(namEditText.getText()+"添加成功");
-											Bitchs bitchs = new Bitchs();
-											bitchs.setObjectId(persons.get(pagerPosition).getObjectId());
-											bitchs.delete(BitchPagerActivity.this);
-										}
-										
-										@Override
-										public void onFailure(int arg0, String arg1) {
-											// TODO Auto-generated method stub
-											
-										}
-									});
+									stars.save(BitchPagerActivity.this,
+											new SaveListener() {
+
+												@Override
+												public void onSuccess() {
+													if (progressDialog.isShowing()) {
+														progressDialog.dismiss();
+													}
+													 Toast.makeText(BitchPagerActivity.this,
+															 namEditText.getText()+"添加成功", 1).show();
+//													namEditText
+//															.setText(namEditText
+//																	.getText()
+//																	+ "添加成功");
+													Bitchs bitchs = new Bitchs();
+													bitchs.setObjectId(persons
+															.get(pagerPosition)
+															.getObjectId());
+													bitchs.delete(BitchPagerActivity.this);
+												}
+
+												@Override
+												public void onFailure(int arg0,
+														String arg1) {
+													// TODO Auto-generated
+													// method stub
+													if (progressDialog.isShowing()) {
+														progressDialog.dismiss();
+													}
+												}
+											});
 
 								}
 
 								@Override
 								public void onFailure(int arg0, String arg1) {
-									// TODO Auto-generated method stub
+									if (progressDialog.isShowing()) {
+										progressDialog.dismiss();
+									}
 								}
 							});
 
 					break;
 				case 2:
-					namEditText.setText(namEditText.getText()+"error");
-//					Toast.makeText(BitchPagerActivity.this, namEditText.getText()+"error", 1).show();
+					if (progressDialog.isShowing()) {
+						progressDialog.dismiss();
+					}
+//					namEditText.setText(namEditText.getText() + "error");
+					 Toast.makeText(BitchPagerActivity.this,
+					 namEditText.getText()+"error", 1).show();
 					break;
 				default:
 					break;
@@ -234,26 +253,11 @@ public class BitchPagerActivity extends FragmentActivity {
 
 			break;
 		case 1:
-//			Bitchs bitchs = new Bitchs();
-//			bitchs.setObjectId(persons.get(pagerPosition).getObjectId());
-//			bitchs.setStar(true);
-//			bitchs.update(BitchPagerActivity.this, new UpdateListener() {
-//
-//				@Override
-//				public void onSuccess() {
-//					// TODO Auto-generated method stub
-//					Toast.makeText(BitchPagerActivity.this, "success",
-//							Toast.LENGTH_LONG).show();
-//				}
-//
-//				@Override
-//				public void onFailure(int arg0, String arg1) {
-//					// TODO Auto-generated method stub
-//					Toast.makeText(BitchPagerActivity.this, arg0 + "  " + arg1,
-//							Toast.LENGTH_LONG).show();
-//				}
-//			});
 			
+
+			progressDialog = new ProgressDialog(BitchPagerActivity.this);
+			progressDialog.show();
+
 			new Thread(new Myrun(persons.get(pagerPosition))).start();
 
 		default:
@@ -276,7 +280,8 @@ public class BitchPagerActivity extends FragmentActivity {
 
 				// 以下是取得图片的两种方法
 				// ////////////// 方法1：取得的是byte数组, 从byte数组生成bitmap
-				byte[] data = getImage(bitchs.getFile().getFileUrl(BitchPagerActivity.this));
+				byte[] data = getImage(bitchs.getFile().getFileUrl(
+						BitchPagerActivity.this));
 				if (data != null) {
 					mBitmap = BitmapFactory.decodeByteArray(data, 0,
 							data.length);// bitmap

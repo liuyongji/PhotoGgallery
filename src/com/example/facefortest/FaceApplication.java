@@ -39,5 +39,7 @@ public class FaceApplication extends Application {
 	public static void displayImage(String url,ImageView imageView){
 		imageLoader.displayImage(url, imageView, options);
 	}
+	
+	
 
 }

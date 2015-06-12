@@ -90,7 +90,7 @@ int id ampm_hitspace 0x7f08001d
 int id ampm_label 0x7f08001e
 int id animator 0x7f080010
 int id bitchs 0x7f080025
-int id bitchs_date 0x7f080026
+int id bitchs_date 0x7f080027
 int id center_view 0x7f080017
 int id collect 0x7f080024
 int id date_picker_day 0x7f08000e
@@ -121,6 +121,7 @@ int id myViewPager1 0x7f080016
 int id pager 0x7f080012
 int id scrollview 0x7f080002
 int id separator 0x7f080019
+int id star 0x7f080026
 int id time_picker 0x7f080020
 int id time_picker_dialog 0x7f08001f
 int id webview 0x7f080001

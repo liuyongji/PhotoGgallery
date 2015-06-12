@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.facefortest.bitch.BitchsActivity;
+import com.example.facefortest.stars.StarsActivity;
 
 import mirko.android.datetimepicker.date.DatePickerDialog;
 import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
@@ -82,13 +83,52 @@ public class MainActivity extends Activity implements
 						@Override
 						public void onSuccess() {
 							// TODO Auto-generated method stub
-							
+							person.setObjectId(persons.get(position).getObjectId());
+							person.delete(MainActivity.this,
+									new DeleteListener() {
+
+										@Override
+										public void onSuccess() {
+											persons.remove(position);
+											total--;
+											imageAdapter.notifyDataSetChanged();
+
+										}
+
+										@Override
+										public void onFailure(int arg0, String arg1) {
+											// TODO Auto-generated method stub
+											toast("删除字段失败：" + arg1);
+										}
+									});
 						}
 						
 						@Override
 						public void onFailure(int arg0, String arg1) {
 							// TODO Auto-generated method stub
-							toast("删除文件失败："+arg1);
+							
+							if (arg0==153) {
+								person.setObjectId(persons.get(position).getObjectId());
+								person.delete(MainActivity.this,
+										new DeleteListener() {
+
+											@Override
+											public void onSuccess() {
+												persons.remove(position);
+												total--;
+												imageAdapter.notifyDataSetChanged();
+
+											}
+
+											@Override
+											public void onFailure(int arg0, String arg1) {
+												// TODO Auto-generated method stub
+												toast("删除字段失败：" + arg1);
+											}
+										});
+							}else {
+								toast("删除文件失败：" +arg0+ arg1);
+							}
 						}
 					});
 					
@@ -162,6 +202,14 @@ public class MainActivity extends Activity implements
 			persons.clear();
 			new GetDataTask().execute(total);
 			break;
+		case R.id.star:
+			if (!admin) {
+				break;
+			}
+			Intent intent2 = new Intent(MainActivity.this, StarsActivity.class);
+			startActivity(intent2);
+
+			break;
 
 		default:
 			break;
@@ -183,6 +231,7 @@ public class MainActivity extends Activity implements
 		@Override
 		protected Void doInBackground(Integer... params) {
 			BmobQuery<Person> bmobQuery = new BmobQuery<Person>();
+			bmobQuery.order("-createdAt");
 			if (mlimit) {
 				BmobQuery<Person> query1 = new BmobQuery<Person>();
 				query1.addWhereGreaterThanOrEqualTo("createdAt", new BmobDate(
@@ -195,8 +244,9 @@ public class MainActivity extends Activity implements
 				query3.add(query1);
 				query3.add(query2);
 				bmobQuery.and(query3);
+				bmobQuery.order("-updatedAt");
 			}
-			bmobQuery.order("-createdAt");
+			
 			if (mcollect) {
 				bmobQuery.addWhereEqualTo("like", true);
 				bmobQuery.order("-updatedAt");

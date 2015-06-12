@@ -151,7 +151,7 @@ public class BitchsActivity extends Activity implements
 			}
 
 			bmobQuery.setSkip(total);
-			bmobQuery.setLimit(100);
+			bmobQuery.setLimit(200);
 			bmobQuery.order("-createdAt");
 			bmobQuery.findObjects(BitchsActivity.this,
 					new FindListener<Bitchs>() {
@@ -201,9 +201,9 @@ public class BitchsActivity extends Activity implements
 				(Serializable) persons);
 		intent.putExtra(BitchPagerActivity.EXTRA_IMAGE_INDEX, position);
 		startActivity(intent);
-		Toast.makeText(BitchsActivity.this,
-				persons.get(position).getCreatedAt(), Toast.LENGTH_SHORT)
-				.show();
+//		Toast.makeText(BitchsActivity.this,
+//				persons.get(position).getCreatedAt(), Toast.LENGTH_SHORT)
+//				.show();
 	}
 
 	@Override
