@@ -1,10 +1,5 @@
 package com.example.facefortest.bitch;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -12,9 +7,6 @@ import org.json.JSONObject;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
-import cn.bmob.v3.listener.UploadFileListener;
-
-import com.example.facefortest.BitmapUtil;
 import com.example.facefortest.R;
 import com.face.test.bean.FaceInfos;
 import com.face.test.bean.Stars;
@@ -27,7 +19,6 @@ import com.loveplusplus.demo.image.ImageDetailFragment;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -55,8 +46,6 @@ public class BitchPagerActivity extends FragmentActivity {
 	private TextView indicator;
 	private List<Bitchs> persons;
 	private Handler handler;
-	private Bitmap mBitmap;
-	private BmobFile bmobFile;
 	private FaceInfos faceInfos;
 	private EditText namEditText;
 	private ProgressDialog progressDialog;
@@ -114,70 +103,42 @@ public class BitchPagerActivity extends FragmentActivity {
 
 				switch (msg.what) {
 				case 0:
-					File file = BitmapUtil.saveBitmap(mBitmap);
-					bmobFile = new BmobFile(file);
-					bmobFile.upload(BitchPagerActivity.this,
-							new UploadFileListener() {
+					Stars stars = new Stars();
+					stars.setFaceId(faceInfos.getFace().get(0).getFace_id());
+					stars.setName(namEditText.getText().toString());
+					stars.setBmobFile(persons.get(pagerPosition).getFile());
+					stars.save(BitchPagerActivity.this, new SaveListener() {
 
-								@Override
-								public void onSuccess() {
-									// TODO Auto-generated method stub
-									Stars stars = new Stars();
-									stars.setFaceId(faceInfos.getFace().get(0)
-											.getFace_id());
-									stars.setName(namEditText.getText()
-											.toString());
-									stars.setBmobFile(bmobFile);
-									stars.save(BitchPagerActivity.this,
-											new SaveListener() {
+						@Override
+						public void onSuccess() {
+							if (progressDialog.isShowing()) {
+								progressDialog.dismiss();
+							}
+							Toast.makeText(BitchPagerActivity.this,
+									namEditText.getText() + "添加成功", 1).show();
+							Bitchs bitchs = new Bitchs();
+							bitchs.setObjectId(persons.get(pagerPosition)
+									.getObjectId());
+							bitchs.delete(BitchPagerActivity.this);
+						}
 
-												@Override
-												public void onSuccess() {
-													if (progressDialog.isShowing()) {
-														progressDialog.dismiss();
-													}
-													 Toast.makeText(BitchPagerActivity.this,
-															 namEditText.getText()+"添加成功", 1).show();
-//													namEditText
-//															.setText(namEditText
-//																	.getText()
-//																	+ "添加成功");
-													Bitchs bitchs = new Bitchs();
-													bitchs.setObjectId(persons
-															.get(pagerPosition)
-															.getObjectId());
-													bitchs.delete(BitchPagerActivity.this);
-												}
-
-												@Override
-												public void onFailure(int arg0,
-														String arg1) {
-													// TODO Auto-generated
-													// method stub
-													if (progressDialog.isShowing()) {
-														progressDialog.dismiss();
-													}
-												}
-											});
-
-								}
-
-								@Override
-								public void onFailure(int arg0, String arg1) {
-									if (progressDialog.isShowing()) {
-										progressDialog.dismiss();
-									}
-								}
-							});
+						@Override
+						public void onFailure(int arg0, String arg1) {
+							// TODO Auto-generated
+							// method stub
+							if (progressDialog.isShowing()) {
+								progressDialog.dismiss();
+							}
+						}
+					});
 
 					break;
 				case 2:
 					if (progressDialog.isShowing()) {
 						progressDialog.dismiss();
 					}
-//					namEditText.setText(namEditText.getText() + "error");
-					 Toast.makeText(BitchPagerActivity.this,
-					 namEditText.getText()+"error", 1).show();
+					Toast.makeText(BitchPagerActivity.this,
+							namEditText.getText() + "error", 1).show();
 					break;
 				default:
 					break;
@@ -253,7 +214,6 @@ public class BitchPagerActivity extends FragmentActivity {
 
 			break;
 		case 1:
-			
 
 			progressDialog = new ProgressDialog(BitchPagerActivity.this);
 			progressDialog.show();
@@ -278,55 +238,41 @@ public class BitchPagerActivity extends FragmentActivity {
 		public void run() {
 			try {
 
-				// 以下是取得图片的两种方法
-				// ////////////// 方法1：取得的是byte数组, 从byte数组生成bitmap
-				byte[] data = getImage(bitchs.getFile().getFileUrl(
-						BitchPagerActivity.this));
-				if (data != null) {
-					mBitmap = BitmapFactory.decodeByteArray(data, 0,
-							data.length);// bitmap
-					JSONObject jsonObject = null;
-					try {
-						jsonObject = request
-								.detectionDetect(new PostParameters()
-										.setImg(data));
-						Log.i("lyj", jsonObject.toString());
-						Gson gson = new Gson();
-						faceInfos = gson.fromJson(jsonObject.toString(),
-								FaceInfos.class);
-						if (faceInfos.getFace().size() <= 0) {
-							Message message = new Message();
-							message.what = 2;
-							handler.sendMessage(message);
-
-						} else {
-							String face1 = faceInfos.getFace().get(0)
-									.getFace_id();
-
-							jsonObject = request
-									.facesetAddFace(new PostParameters()
-											.setFaceId(face1).setFacesetName(
-													"Stars1"));
-
-							Message message = new Message();
-							message.obj = jsonObject.toString();
-							message.what = 0;
-							handler.sendMessage(message);
-
-						}
-
-					} catch (FaceppParseException e) {
-						e.printStackTrace();
+				JSONObject jsonObject = null;
+				try {
+					jsonObject = request.detectionDetect(new PostParameters()
+							.setUrl(bitchs.getFile().getFileUrl(
+									BitchPagerActivity.this)));
+					Log.i("lyj", jsonObject.toString());
+					Gson gson = new Gson();
+					faceInfos = gson.fromJson(jsonObject.toString(),
+							FaceInfos.class);
+					if (faceInfos.getFace().size() <= 0) {
 						Message message = new Message();
 						message.what = 2;
 						handler.sendMessage(message);
+
+					} else {
+						String face1 = faceInfos.getFace().get(0).getFace_id();
+
+						jsonObject = request
+								.facesetAddFace(new PostParameters().setFaceId(
+										face1).setFacesetName("Stars1"));
+
+						Message message = new Message();
+						message.obj = jsonObject.toString();
+						message.what = 0;
+						handler.sendMessage(message);
+
 					}
 
-				} else {
+				} catch (FaceppParseException e) {
+					e.printStackTrace();
 					Message message = new Message();
 					message.what = 2;
 					handler.sendMessage(message);
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				Message message = new Message();
@@ -337,29 +283,5 @@ public class BitchPagerActivity extends FragmentActivity {
 		}
 
 	};
-
-	public byte[] getImage(String path) throws Exception {
-		URL url = new URL(path);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(5 * 1000);
-		conn.setRequestMethod("GET");
-		InputStream inStream = conn.getInputStream();
-		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-			return readStream(inStream);
-		}
-		return null;
-	}
-
-	public static byte[] readStream(InputStream inStream) throws Exception {
-		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-		byte[] buffer = new byte[1024];
-		int len = 0;
-		while ((len = inStream.read(buffer)) != -1) {
-			outStream.write(buffer, 0, len);
-		}
-		outStream.close();
-		inStream.close();
-		return outStream.toByteArray();
-	}
 
 }

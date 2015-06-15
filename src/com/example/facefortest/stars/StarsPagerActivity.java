@@ -2,15 +2,12 @@ package com.example.facefortest.stars;
 
 import java.util.List;
 
-import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.example.facefortest.R;
 import com.loveplusplus.demo.image.HackyViewPager;
 import com.loveplusplus.demo.image.ImageDetailFragment;
 
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -34,10 +31,8 @@ public class StarsPagerActivity extends FragmentActivity {
 	private int pagerPosition;
 	private TextView indicator;
 	private List<Stars> persons;
-	private Bitmap mBitmap;
-	private BmobFile bmobFile;
 	private EditText namEditText;
-	private ProgressDialog progressDialog;
+	
 
 	// private String ids;
 
@@ -61,6 +56,9 @@ public class StarsPagerActivity extends FragmentActivity {
 		CharSequence text = getString(R.string.viewpager_indicator, 1, mPager
 				.getAdapter().getCount());
 		indicator.setText(text);
+		
+		setTitle(persons.get(pagerPosition).getName());
+		
 		// 更新下标
 		mPager.setOnPageChangeListener(new OnPageChangeListener() {
 
@@ -77,6 +75,7 @@ public class StarsPagerActivity extends FragmentActivity {
 				CharSequence text = getString(R.string.viewpager_indicator,
 						arg0 + 1, mPager.getAdapter().getCount());
 				indicator.setText(text);
+				setTitle(persons.get(arg0).getName());
 			}
 
 		});
