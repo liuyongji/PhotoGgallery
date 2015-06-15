@@ -58,7 +58,8 @@ public class MainActivity extends Activity implements
 		setContentView(R.layout.activity_main);
 		
 
-		admin = getIntent().getExtras().getBoolean("admin", false);
+//		admin = getIntent().getExtras().getBoolean("admin", false);
+		admin=((FaceApplication)getApplication()).getAdmin();
 		mGridView = (GridView) findViewById(R.id.gv_content);
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -188,9 +189,6 @@ public class MainActivity extends Activity implements
 			datePickerDialog.show(getFragmentManager(), "pick");
 			break;
 		case R.id.bitchs:
-			if (!admin) {
-				break;
-			}
 			Intent intent = new Intent(MainActivity.this, BitchsActivity.class);
 			startActivity(intent);
 
@@ -203,9 +201,6 @@ public class MainActivity extends Activity implements
 			new GetDataTask().execute(total);
 			break;
 		case R.id.star:
-			if (!admin) {
-				break;
-			}
 			Intent intent2 = new Intent(MainActivity.this, StarsActivity.class);
 			startActivity(intent2);
 

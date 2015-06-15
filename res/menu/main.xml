@@ -9,7 +9,7 @@
         android:id="@+id/collect"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="显示收藏"/>
+        android:title="收藏夹"/>
      <item
         android:id="@+id/bitchs"
         android:orderInCategory="100"
@@ -19,6 +19,6 @@
         android:id="@+id/star"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="Stars"/>
+        android:title="明星库"/>
 
 </menu>

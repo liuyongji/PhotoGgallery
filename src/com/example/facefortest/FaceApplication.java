@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import a.This;
 import android.app.Application;
 import android.widget.ImageView;
 
@@ -17,6 +18,8 @@ public class FaceApplication extends Application {
 	private ImageLoaderConfiguration configuration;
 	private static ImageLoader imageLoader = ImageLoader.getInstance();
 	private static DisplayImageOptions options;
+	
+	private  boolean admin=false;
 
 	@Override
 	public void onCreate() {
@@ -39,6 +42,14 @@ public class FaceApplication extends Application {
 	public static void displayImage(String url,ImageView imageView){
 		imageLoader.displayImage(url, imageView, options);
 	}
+	
+	public  boolean getAdmin(){
+		return admin;
+	}
+	public  void setAdmin(boolean admin){
+		this.admin=admin;
+	}
+	
 	
 	
 

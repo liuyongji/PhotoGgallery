@@ -8,11 +8,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.example.facefortest.FaceApplication;
 import com.example.facefortest.R;
 import com.example.facefortest.Utils;
+
 import mirko.android.datetimepicker.date.DatePickerDialog;
 import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
-
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
@@ -42,6 +43,7 @@ public class StarsActivity extends Activity implements
 	@SuppressLint("SimpleDateFormat")
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private Date date;
+	
 	private final Calendar mCalendar = Calendar.getInstance();
 
 	private List<Stars> persons = new ArrayList<Stars>();
@@ -65,6 +67,10 @@ public class StarsActivity extends Activity implements
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					final int position, long id) {
+				if (!((FaceApplication)getApplication()).getAdmin()) {
+					toast("you are not admin");
+					return false;
+				}
 				final Stars person = new Stars();
 				BmobFile file = new BmobFile();
 				file.setUrl(persons.get(position).getBmobFile().getUrl());

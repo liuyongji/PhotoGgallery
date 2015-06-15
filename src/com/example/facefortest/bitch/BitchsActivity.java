@@ -8,11 +8,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.example.facefortest.FaceApplication;
 import com.example.facefortest.R;
 import com.example.facefortest.Utils;
+
 import mirko.android.datetimepicker.date.DatePickerDialog;
 import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
-
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
@@ -66,6 +67,10 @@ public class BitchsActivity extends Activity implements
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					final int position, long id) {
+				if (!((FaceApplication) getApplication()).getAdmin()) {
+					toast("you are not admin");
+					return false;
+				}
 				final Bitchs person = new Bitchs();
 				BmobFile file = new BmobFile();
 				file.setUrl(persons.get(position).getFile().getUrl());
@@ -97,7 +102,7 @@ public class BitchsActivity extends Activity implements
 					@Override
 					public void onFailure(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-						toast("删除文件失败：" +arg0+ arg1);
+						toast("删除文件失败：" + arg0 + arg1);
 					}
 				});
 
@@ -201,21 +206,30 @@ public class BitchsActivity extends Activity implements
 				(Serializable) persons);
 		intent.putExtra(BitchPagerActivity.EXTRA_IMAGE_INDEX, position);
 		startActivity(intent);
-//		Toast.makeText(BitchsActivity.this,
-//				persons.get(position).getCreatedAt(), Toast.LENGTH_SHORT)
-//				.show();
+		// Toast.makeText(BitchsActivity.this,
+		// persons.get(position).getCreatedAt(), Toast.LENGTH_SHORT)
+		// .show();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		menu.add(0, 1, 0, "日期");
-		return false;// 返回false就不会显示菜单
+		menu.findItem(1).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		return true;// 返回false就不会显示菜单
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		datePickerDialog.show(getFragmentManager(), "pick");
+		switch (item.getItemId()) {
+		case 0:
+			datePickerDialog.show(getFragmentManager(), "pick");
+			break;
+
+		default:
+			break;
+		}
+		
 		return true;
 	}
 

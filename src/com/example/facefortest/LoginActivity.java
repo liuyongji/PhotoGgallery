@@ -28,9 +28,11 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (et_password.getText().toString().equals("123")) {
+					((FaceApplication)getApplication()).setAdmin(false);
 					startActivity(new Intent(LoginActivity.this,MainActivity.class).putExtra("admin", false));
 				}else if (et_password.getText().toString().equals("147")) {
 					startActivity(new Intent(LoginActivity.this,MainActivity.class).putExtra("admin", true));
+					((FaceApplication)getApplication()).setAdmin(true);
 				} 
 			}
 		});

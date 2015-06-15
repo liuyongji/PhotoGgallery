@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+
+import com.example.facefortest.FaceApplication;
 import com.example.facefortest.R;
 import com.face.test.bean.FaceInfos;
 import com.face.test.bean.Stars;
@@ -18,7 +19,6 @@ import com.loveplusplus.demo.image.HackyViewPager;
 import com.loveplusplus.demo.image.ImageDetailFragment;
 
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class BitchPagerActivity extends FragmentActivity {
 	private FaceInfos faceInfos;
 	private EditText namEditText;
 	private ProgressDialog progressDialog;
+	private boolean admin;
 
 	// private String ids;
 
@@ -57,6 +59,7 @@ public class BitchPagerActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.image_detail_pager);
+		admin=((FaceApplication)getApplication()).getAdmin();
 		request = new HttpRequests("99a9423512d4f19c17bd8d6b526e554c",
 				"z8stpP3-HMdYhg6kAK73A2nBFwZg4Thl");
 
@@ -64,6 +67,9 @@ public class BitchPagerActivity extends FragmentActivity {
 		persons = (List<Bitchs>) getIntent().getSerializableExtra(
 				EXTRA_IMAGE_URLS);
 		namEditText = (EditText) findViewById(R.id.ed_name);
+		if (!admin) {
+			namEditText.setVisibility(View.GONE);
+		}
 		mPager = (HackyViewPager) findViewById(R.id.pager);
 		ImagePagerAdapter mAdapter = new ImagePagerAdapter(
 				getSupportFragmentManager(), persons);
@@ -185,7 +191,12 @@ public class BitchPagerActivity extends FragmentActivity {
 		mInflater.inflate(R.menu.main2, menu);
 		menu.add(0, 1, 0, "star");
 		menu.findItem(1).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		return true;// 返回false就不会显示菜单
+		if (admin) {
+			return true;
+		}else {
+			return false;// 返回false就不会显示菜单
+		}
+		
 	}
 
 	@Override
