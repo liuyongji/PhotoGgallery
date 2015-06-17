@@ -1,7 +1,9 @@
 package com.example.facefortest;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,18 +42,15 @@ import android.util.Log;
 public class Util {
 	public static Face face;
 
-
-
 	/*
 	 * json 解析
 	 */
 
-	public static String Jsonn(JSONObject jsonObject)
-			throws JSONException {
+	public static String Jsonn(JSONObject jsonObject) throws JSONException {
 
-		 StringBuffer buffer = new StringBuffer();
-//		List<String> list = new ArrayList<String>();
-		
+		StringBuffer buffer = new StringBuffer();
+		// List<String> list = new ArrayList<String>();
+
 		JSONArray jsonArray = jsonObject.getJSONArray("face");
 		if (jsonArray.length() > 0) {
 			for (int i = 0; i < jsonArray.length(); i++) {
@@ -75,31 +74,32 @@ public class Util {
 						.getDouble("value"));
 				// buffer.append(face.getFaceId()+"\n");
 
-//				list.add("肤色：" + face.getRaceValue());
-//				list.add("肤色准确度："
-//						+ Double.toString(face.getRaceConfidence()).substring(
-//								0, 5) + "%");
-//				list.add("性别：" + face.getGenderValue());
-//				list.add("性别准确度："
-//						+ Double.toString(face.getGenderConfidence())
-//								.substring(0, 5) + "%");
-//				list.add("年龄：" + face.getAgeValue() + "岁");
-//				list.add("年龄误差：" + face.getAgeRange());
-//				list.add("微笑指数：" + face.getSmilingValue() + "%");
+				// list.add("肤色：" + face.getRaceValue());
+				// list.add("肤色准确度："
+				// + Double.toString(face.getRaceConfidence()).substring(
+				// 0, 5) + "%");
+				// list.add("性别：" + face.getGenderValue());
+				// list.add("性别准确度："
+				// + Double.toString(face.getGenderConfidence())
+				// .substring(0, 5) + "%");
+				// list.add("年龄：" + face.getAgeValue() + "岁");
+				// list.add("年龄误差：" + face.getAgeRange());
+				// list.add("微笑指数：" + face.getSmilingValue() + "%");
 
-				 buffer.append("肤色：").append(face.getRaceValue()).append("  ");				
-				 buffer.append("性别：").append(face.getGenderValue()).append("  ");
-				 buffer.append("误差：")
-				 .append(Double.toString(face.getGenderConfidence())
-				 .substring(0, 5)).append("% ").append("\n");
-				 buffer.append("年龄：").append(face.getAgeValue()).append("岁 ");
-				 buffer.append("误差：").append(face.getAgeRange()).append("岁  ");
-				 buffer.append("笑容度：").append(Double.toString(face.getSmilingValue())
-						 .substring(0, 5)).append("%");
+				buffer.append("肤色：").append(face.getRaceValue()).append("  ");
+				buffer.append("性别：").append(face.getGenderValue()).append("  ");
+				buffer.append("误差：")
+						.append(Double.toString(face.getGenderConfidence())
+								.substring(0, 5)).append("% ").append("\n");
+				buffer.append("年龄：").append(face.getAgeValue()).append("岁 ");
+				buffer.append("误差：").append(face.getAgeRange()).append("岁  ");
+				buffer.append("笑容度：")
+						.append(Double.toString(face.getSmilingValue())
+								.substring(0, 5)).append("%");
 			}
 		} else {
 			buffer.append("没检测到人脸");
-//			return null;
+			// return null;
 		}
 
 		return buffer.toString();
@@ -175,19 +175,20 @@ public class Util {
 	public static String Similarity(JSONObject jsonObject) throws JSONException {
 
 		String string = jsonObject.getString("similarity").substring(0, 5);
-				
+
 		return string;
 	}
-	public static int changeFloat(float float1){
-		int tmpflt=(int)float1;
-		if (tmpflt>85) {
-			
-		}else if(tmpflt<50){
-			tmpflt=70+(int)(Math.random()*10);
+
+	public static int changeFloat(float float1) {
+		int tmpflt = (int) float1;
+		if (tmpflt > 85) {
+
+		} else if (tmpflt < 50) {
+			tmpflt = 70 + (int) (Math.random() * 10);
 		}
 		return tmpflt;
 	}
-	
+
 	public static String getFromAssets(Context context, String fileName) {
 		String result = "";
 		try {
@@ -205,10 +206,25 @@ public class Util {
 		return result;
 	}
 
-
-	
-
-	
-	
+	public static String getFile(Context context, String fileName) {
+		String result = "";
+		try {
+			String foldername = Environment.getExternalStorageDirectory()
+					.getPath() + File.separator;
+			File targetFile = new File(foldername + fileName);
+			InputStream in = new BufferedInputStream(new FileInputStream(
+					targetFile));
+			// 获取文件的字节数
+			int lenght = in.available();
+			// 创建byte数组
+			byte[] buffer = new byte[lenght];
+			// 将文件中的数据读到byte数组中
+			in.read(buffer);
+			result = EncodingUtils.getString(buffer, "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 }

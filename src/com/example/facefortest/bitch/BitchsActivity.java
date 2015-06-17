@@ -222,7 +222,7 @@ public class BitchsActivity extends Activity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case 0:
+		case 1:
 			datePickerDialog.show(getFragmentManager(), "pick");
 			break;
 
