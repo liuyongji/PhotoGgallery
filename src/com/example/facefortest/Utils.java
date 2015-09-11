@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+
 public class Utils {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
 	public  static String pad(int c) {
@@ -31,6 +32,9 @@ public class Utils {
 		}
 	    return dt1;
 	}
+	
+	
+	
 	public static byte[] getImage(String path) throws Exception {
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();

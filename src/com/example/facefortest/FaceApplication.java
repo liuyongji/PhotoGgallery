@@ -12,6 +12,8 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import a.This;
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 public class FaceApplication extends Application {
@@ -31,16 +33,21 @@ public class FaceApplication extends Application {
 		.diskCache(new UnlimitedDiscCache(cacheDir))
 				.threadPoolSize(3).discCacheFileCount(100).build();
 		imageLoader.init(configuration);
-		options = new DisplayImageOptions.Builder()
 		
-//		.discCache(new UnlimitedDiscCache(StorageUtils.getCacheDirectory(getApplicationContext())))
-				.showImageOnLoading(R.drawable.loading)
-				.cacheInMemory(true)
-				.cacheOnDisk(true)
-				.cacheOnDisc(true).build();
 	}
 	public static void displayImage(String url,ImageView imageView){
+		
+		Drawable drawable =BitmapUtil.getImageThumbnail(url, 150, 150);
+		
+		options = new DisplayImageOptions.Builder()	
+		.showImageOnLoading(R.drawable.loading)
+		.cacheInMemory(true)
+		.cacheOnDisk(true)
+		.cacheOnDisc(true).build();
 		imageLoader.displayImage(url, imageView, options);
+		
+		
+		
 	}
 	
 	public  boolean getAdmin(){

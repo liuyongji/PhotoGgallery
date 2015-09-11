@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -44,6 +45,7 @@ public class AddStarsActivity extends Activity implements OnClickListener {
 	private BmobFile bmobFile;
 	private List<Stars> starssss;
 	private int i = 0;
+	private ProgressDialog progressDialog;
 
 	// private byte[] data;
 
@@ -55,6 +57,7 @@ public class AddStarsActivity extends Activity implements OnClickListener {
 		request = new HttpRequests("99a9423512d4f19c17bd8d6b526e554c",
 				"z8stpP3-HMdYhg6kAK73A2nBFwZg4Thl");
 		initView();
+		progressDialog=new ProgressDialog(this);
 		handler = new Handler() {
 			public void handleMessage(Message msg) {
 
@@ -68,6 +71,7 @@ public class AddStarsActivity extends Activity implements OnClickListener {
 								@Override
 								public void onSuccess() {
 									// TODO Auto-generated method stub
+									progressDialog.dismiss();
 									Stars stars = new Stars();
 									stars.setFaceId(faceInfos.getFace().get(0)
 											.getFace_id());
@@ -83,6 +87,7 @@ public class AddStarsActivity extends Activity implements OnClickListener {
 								@Override
 								public void onFailure(int arg0, String arg1) {
 									// TODO Auto-generated method stub
+									progressDialog.dismiss();
 									tv_result.setText(ed_name.getText()
 											+ "fail");
 								}
@@ -97,8 +102,7 @@ public class AddStarsActivity extends Activity implements OnClickListener {
 								+ "end");
 						return;
 					}
-					new AddThread(starssss.get(i).getUrl(), 1)
-							.start();
+					new AddThread(starssss.get(i).getUrl(), 1).start();
 					break;
 				case 3:
 					File file2 = BitmapUtil.saveBitmap(mBitmap);
@@ -280,7 +284,7 @@ public class AddStarsActivity extends Activity implements OnClickListener {
 				tv_result.setText("url不能为空");
 				return;
 			}
-
+			progressDialog.show();
 			new AddThread(ed_url.getText().toString(), 0).start();
 
 			break;
@@ -288,6 +292,7 @@ public class AddStarsActivity extends Activity implements OnClickListener {
 			initdata();
 			break;
 		case R.id.btn_singleimg:
+			progressDialog.show();
 			new AddThread(tv_url.getText().toString(), 2).start();
 			break;
 		case R.id.tv_url:

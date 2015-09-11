@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.example.facefortest.bitch.BitchsActivity;
 import com.example.facefortest.stars.StarsActivity;
+import com.face.test.bean.Person2;
 
 import mirko.android.datetimepicker.date.DatePickerDialog;
 import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
@@ -39,7 +40,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements
 		SwipeRefreshLayout.OnRefreshListener {
 
-	private List<Person> persons = new ArrayList<Person>();
+	private List<Person2> persons = new ArrayList<Person2>();
 	private int total = 0;
 	private ImageAdapter imageAdapter;
 	private GridView mGridView;
@@ -76,7 +77,7 @@ public class MainActivity extends Activity implements
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					final int position, long id) {
 				if (admin) {
-					final Person person = new Person();
+					final Person2 person = new Person2();
 					BmobFile file = new BmobFile();
 					file.setUrl(persons.get(position).getFile().getUrl());
 					file.delete(MainActivity.this, new DeleteListener() {
@@ -205,6 +206,8 @@ public class MainActivity extends Activity implements
 			startActivity(intent2);
 
 			break;
+		case R.id.person2:
+			break;
 
 		default:
 			break;
@@ -213,7 +216,7 @@ public class MainActivity extends Activity implements
 		return true;
 	}
 
-	private void imageBrower(int position, List<Person> list) {
+	private void imageBrower(int position, List<Person2> list) {
 		Intent intent = new Intent(MainActivity.this, ImagePagerActivity.class);
 		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,
 				(Serializable) persons);
@@ -225,17 +228,17 @@ public class MainActivity extends Activity implements
 
 		@Override
 		protected Void doInBackground(Integer... params) {
-			BmobQuery<Person> bmobQuery = new BmobQuery<Person>();
+			BmobQuery<Person2> bmobQuery = new BmobQuery<Person2>();
 			bmobQuery.order("-createdAt");
 			if (mlimit) {
-				BmobQuery<Person> query1 = new BmobQuery<Person>();
+				BmobQuery<Person2> query1 = new BmobQuery<Person2>();
 				query1.addWhereGreaterThanOrEqualTo("createdAt", new BmobDate(
 						date));
-				BmobQuery<Person> query2 = new BmobQuery<Person>();
+				BmobQuery<Person2> query2 = new BmobQuery<Person2>();
 				query2.addWhereLessThan("createdAt",
 						new BmobDate(Utils.addDate(date)));
 
-				List<BmobQuery<Person>> query3 = new ArrayList<BmobQuery<Person>>();
+				List<BmobQuery<Person2>> query3 = new ArrayList<BmobQuery<Person2>>();
 				query3.add(query1);
 				query3.add(query2);
 				bmobQuery.and(query3);
@@ -248,10 +251,10 @@ public class MainActivity extends Activity implements
 			}
 			bmobQuery.setSkip(total);
 			bmobQuery.findObjects(MainActivity.this,
-					new FindListener<Person>() {
+					new FindListener<Person2>() {
 
 						@Override
-						public void onSuccess(List<Person> persons) {
+						public void onSuccess(List<Person2> persons) {
 							if (persons == null || persons.size() == 0) {
 								toast("已经到头了");
 								mSwipeRefreshLayout.setRefreshing(false);

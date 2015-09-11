@@ -2,6 +2,8 @@ package com.example.facefortest;
 
 import java.util.List;
 
+import com.face.test.bean.Person2;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,10 +20,10 @@ public class ImageAdapter extends BaseAdapter {
 //	private List<String> list;
 	private int width;
 	
-	private List<Person> list;
+	private List<Person2> list;
 	
 
-	public ImageAdapter(Activity a, final List<Person> urls) {
+	public ImageAdapter(Activity a, final List<Person2> urls) {
 		activity = a;
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,6 +59,8 @@ public class ImageAdapter extends BaseAdapter {
 				width / 3));
 		if (list.get(position).getFile()!=null) {
 //			list.get(position).getFile().loadImageThumbnail(activity, imageView, 300, 300);
+			
+			
 			FaceApplication.displayImage(list.get(position).getFile().getFileUrl(activity), imageView);
 		}else {
 			imageView.setImageResource(R.drawable.error);

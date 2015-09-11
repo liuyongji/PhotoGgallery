@@ -5,6 +5,7 @@ import java.util.List;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.example.facefortest.R;
+import com.face.test.bean.Person2;
 import com.loveplusplus.demo.image.HackyViewPager;
 import com.loveplusplus.demo.image.ImageDetailFragment;
 
@@ -29,7 +30,7 @@ public class ImagePagerActivity extends FragmentActivity {
 	private HackyViewPager mPager;
 	private int pagerPosition;
 	private TextView indicator;
-	private List<Person> persons;
+	private List<Person2> persons;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -38,7 +39,7 @@ public class ImagePagerActivity extends FragmentActivity {
 		setContentView(R.layout.image_detail_pager);
 
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
-	    persons = (List<Person>) getIntent().getSerializableExtra(
+	    persons = (List<Person2>) getIntent().getSerializableExtra(
 				EXTRA_IMAGE_URLS);
 	    findViewById(R.id.ed_name).setVisibility(View.GONE);
 
@@ -85,9 +86,9 @@ public class ImagePagerActivity extends FragmentActivity {
 	private class ImagePagerAdapter extends FragmentStatePagerAdapter {
 
 
-		public List<Person> fileList;
+		public List<Person2> fileList;
 
-		public ImagePagerAdapter(FragmentManager fm, List<Person> fileList) {
+		public ImagePagerAdapter(FragmentManager fm, List<Person2> fileList) {
 			super(fm);
 			this.fileList = fileList;
 		}
@@ -117,7 +118,7 @@ public class ImagePagerActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
-		Person person = new Person();
+		Person2 person = new Person2();
 		person.setObjectId(persons.get(pagerPosition).getObjectId());
 		person.setLike(true);
 		person.update(ImagePagerActivity.this, new UpdateListener() {

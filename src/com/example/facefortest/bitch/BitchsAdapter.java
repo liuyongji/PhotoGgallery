@@ -56,8 +56,7 @@ public class BitchsAdapter extends BaseAdapter{
 		// TODO Auto-generated method stub
 		convertView = inflater.inflate(R.layout.lv_item, null);
 		ImageView imageView = (ImageView) convertView
-				.findViewById(R.id.imageView1);
-		
+				.findViewById(R.id.imageView1);		
 		imageView.setLayoutParams(new LinearLayout.LayoutParams(width / 3,
 				width / 3));
 		if (list.get(position).getFile()!=null) {

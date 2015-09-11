@@ -20,5 +20,10 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="明星库"/>
+     <item
+        android:id="@+id/person2"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="新表"/>
 
 </menu>
