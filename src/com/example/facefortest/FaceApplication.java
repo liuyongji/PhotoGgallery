@@ -8,12 +8,15 @@ import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import a.This;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.ImageView;
 
 public class FaceApplication extends Application {
@@ -36,18 +39,13 @@ public class FaceApplication extends Application {
 		
 	}
 	public static void displayImage(String url,ImageView imageView){
-		
-		Drawable drawable =BitmapUtil.getImageThumbnail(url, 150, 150);
-		
+//		Drawable drawable =BitmapUtil.getImageThumbnail(url, 150, 150);
 		options = new DisplayImageOptions.Builder()	
 		.showImageOnLoading(R.drawable.loading)
 		.cacheInMemory(true)
 		.cacheOnDisk(true)
 		.cacheOnDisc(true).build();
 		imageLoader.displayImage(url, imageView, options);
-		
-		
-		
 	}
 	
 	public  boolean getAdmin(){

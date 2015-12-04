@@ -6,6 +6,7 @@ import com.face.test.bean.Person2;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,13 +61,10 @@ public class ImageAdapter extends BaseAdapter {
 		if (list.get(position).getFile()!=null) {
 //			list.get(position).getFile().loadImageThumbnail(activity, imageView, 300, 300);
 			
-			
 			FaceApplication.displayImage(list.get(position).getFile().getFileUrl(activity), imageView);
 		}else {
 			imageView.setImageResource(R.drawable.error);
 		}
-		
-		
 		return convertView;
 	}
 

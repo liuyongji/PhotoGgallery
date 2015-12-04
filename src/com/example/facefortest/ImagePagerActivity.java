@@ -41,7 +41,7 @@ public class ImagePagerActivity extends FragmentActivity {
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 	    persons = (List<Person2>) getIntent().getSerializableExtra(
 				EXTRA_IMAGE_URLS);
-	    findViewById(R.id.ed_name).setVisibility(View.GONE);
+//	    findViewById(R.id.ed_name).setVisibility(View.GONE);
 
 		mPager = (HackyViewPager) findViewById(R.id.pager);
 		ImagePagerAdapter mAdapter = new ImagePagerAdapter(
@@ -112,6 +112,10 @@ public class ImagePagerActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		MenuInflater mInflater = getMenuInflater();
 		mInflater.inflate(R.menu.main2, menu);
+		menu.add(0, 1, 0, "star");
+		menu.findItem(1).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+	
+		
 		return true;// 返回false就不会显示菜单
 	}
 
@@ -140,5 +144,7 @@ public class ImagePagerActivity extends FragmentActivity {
 
 		return true;
 	}
+	
+	
 
 }

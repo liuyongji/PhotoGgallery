@@ -10,6 +10,7 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.example.facefortest.FaceApplication;
 import com.example.facefortest.R;
 import com.face.test.bean.FaceInfos;
+import com.face.test.bean.Person2;
 import com.face.test.bean.Stars;
 import com.facepp.error.FaceppParseException;
 import com.facepp.http.HttpRequests;
@@ -45,7 +46,7 @@ public class BitchPagerActivity extends FragmentActivity {
 	private HackyViewPager mPager;
 	private int pagerPosition;
 	private TextView indicator;
-	private List<Bitchs> persons;
+	private List<Person2> persons;
 	private Handler handler;
 	private FaceInfos faceInfos;
 	private EditText namEditText;
@@ -64,7 +65,7 @@ public class BitchPagerActivity extends FragmentActivity {
 				"z8stpP3-HMdYhg6kAK73A2nBFwZg4Thl");
 
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
-		persons = (List<Bitchs>) getIntent().getSerializableExtra(
+		persons = (List<Person2>) getIntent().getSerializableExtra(
 				EXTRA_IMAGE_URLS);
 		namEditText = (EditText) findViewById(R.id.ed_name);
 		if (!admin) {
@@ -162,9 +163,9 @@ public class BitchPagerActivity extends FragmentActivity {
 
 		// public List<String> fileList;
 
-		public List<Bitchs> fileList;
+		public List<Person2> fileList;
 
-		public ImagePagerAdapter(FragmentManager fm, List<Bitchs> fileList) {
+		public ImagePagerAdapter(FragmentManager fm, List<Person2> fileList) {
 			super(fm);
 			this.fileList = fileList;
 		}
@@ -239,9 +240,9 @@ public class BitchPagerActivity extends FragmentActivity {
 	}
 
 	private class Myrun implements Runnable {
-		private Bitchs bitchs;
+		private Person2 bitchs;
 
-		public Myrun(Bitchs bitchs) {
+		public Myrun(Person2 bitchs) {
 			this.bitchs = bitchs;
 		}
 

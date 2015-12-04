@@ -8,9 +8,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.example.facefortest.bitch.BitchPagerActivity;
 import com.example.facefortest.bitch.BitchsActivity;
 import com.example.facefortest.stars.StarsActivity;
 import com.face.test.bean.Person2;
+import com.weedong.corps.framwork.view.pulltorefresh.PullToRefreshBase;
+import com.weedong.corps.framwork.view.pulltorefresh.PullToRefreshBase.Mode;
+import com.weedong.corps.framwork.view.pulltorefresh.PullToRefreshBase.OnRefreshListener;
+import com.weedong.corps.framwork.view.pulltorefresh.PullToRefreshBase.OnRefreshListener2;
+import com.weedong.corps.framwork.view.pulltorefresh.PullToRefreshGridView;
 
 import mirko.android.datetimepicker.date.DatePickerDialog;
 import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
@@ -35,6 +41,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements
@@ -43,10 +50,10 @@ public class MainActivity extends Activity implements
 	private List<Person2> persons = new ArrayList<Person2>();
 	private int total = 0;
 	private ImageAdapter imageAdapter;
-	private GridView mGridView;
+	private PullToRefreshGridView mGridView;
 	@SuppressLint("SimpleDateFormat")
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	private SwipeRefreshLayout mSwipeRefreshLayout;
+//	private SwipeRefreshLayout mSwipeRefreshLayout;
 	private final Calendar mCalendar = Calendar.getInstance();
 	private boolean mlimit = false;
 	private Date date;
@@ -56,12 +63,12 @@ public class MainActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main_pull_to_refresh_activity);
 		
 
 //		admin = getIntent().getExtras().getBoolean("admin", false);
 		admin=((FaceApplication)getApplication()).getAdmin();
-		mGridView = (GridView) findViewById(R.id.gv_content);
+		mGridView = (PullToRefreshGridView) findViewById(R.id.gv_content);
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -71,7 +78,25 @@ public class MainActivity extends Activity implements
 				imageBrower(position, persons);
 			}
 		});
-		mGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
+		mGridView.setMode(Mode.BOTH);
+		mGridView.setOnRefreshListener(new OnRefreshListener2<GridView>() {
+
+			@Override
+			public void onPullDownToRefresh(
+					PullToRefreshBase<GridView> refreshView) {
+				// TODO Auto-generated method stub
+				mGridView.onRefreshComplete();
+			}
+
+			@Override
+			public void onPullUpToRefresh(
+					PullToRefreshBase<GridView> refreshView) {
+				// TODO Auto-generated method stub
+				
+				new GetDataTask().execute(total);
+			}});
+		mGridView.getRefreshableView().setNumColumns(3);
+		mGridView.getRefreshableView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
@@ -144,8 +169,8 @@ public class MainActivity extends Activity implements
 				return true;
 			}
 		});
-		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.id_swipe_ly);
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+//		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.id_swipe_ly);
+//		mSwipeRefreshLayout.setOnRefreshListener(this);
 		new GetDataTask().execute(total);
 
 	}
@@ -217,7 +242,7 @@ public class MainActivity extends Activity implements
 	}
 
 	private void imageBrower(int position, List<Person2> list) {
-		Intent intent = new Intent(MainActivity.this, ImagePagerActivity.class);
+		Intent intent = new Intent(MainActivity.this, BitchPagerActivity.class);
 		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,
 				(Serializable) persons);
 		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
@@ -257,19 +282,22 @@ public class MainActivity extends Activity implements
 						public void onSuccess(List<Person2> persons) {
 							if (persons == null || persons.size() == 0) {
 								toast("已经到头了");
-								mSwipeRefreshLayout.setRefreshing(false);
+//								mSwipeRefreshLayout.setRefreshing(false);
+								mGridView.onRefreshComplete();
 								return;
 							}
 
-							MainActivity.this.persons.addAll(0, persons);
+							MainActivity.this.persons.addAll(persons);
 
 							total += persons.size();
 							imageAdapter = new ImageAdapter(MainActivity.this,
 									MainActivity.this.persons);
 							toast(persons.get(persons.size() - 1)
 									.getCreatedAt());
-							mGridView.setAdapter(imageAdapter);
-							mSwipeRefreshLayout.setRefreshing(false);
+							mGridView.getRefreshableView().setAdapter(imageAdapter);
+							mGridView.onRefreshComplete();
+							mGridView.getRefreshableView().setSelection(total- persons.size()-1);
+//							mSwipeRefreshLayout.setRefreshing(false);
 							imageAdapter.notifyDataSetChanged();
 						}
 
